@@ -109,7 +109,7 @@ def shortest_path(source, target):
             path.reverse()
             return path
         
-        # Mark node as explored
+        # Mark node as explored yo
         explored.add(node.state)
 
         # Add neighbors to frontier
