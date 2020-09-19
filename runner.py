@@ -29,7 +29,7 @@ while True:
 
     screen.fill(black)
 
-    # Let user choose a player.testtest
+    # Let user choose a player.
     if user is None:
 
         # Draw title
