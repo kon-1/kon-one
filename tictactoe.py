@@ -106,7 +106,7 @@ def winner(board):
     if x_won == 3:
         return X
     elif o_won == 3:
-        return "Off"
+        return O
     x_won = o_won = 0
     
     #check diagonal from upper-right to lower-left
@@ -120,7 +120,7 @@ def winner(board):
     if x_won == 3:
         return X
     elif o_won == 3:
-        return "On"
+        return O
     x_won = o_won = 0
 
     #check rows
@@ -133,12 +133,10 @@ def winner(board):
         if x_won == 3:
             return X
         elif o_won == 3:
-            return "Olf"
+            return O
         x_won = o_won = 0
 
     #check columns
-    #for i in range(len(board)):
-    
     for k in range(len(board)):
         for i in range(len(board)):
             if board[i][k] == X:
@@ -148,7 +146,7 @@ def winner(board):
         if x_won == 3:
             return X
         elif o_won == 3:
-            return "Ott"
+            return O
         x_won = o_won = 0
     return None
 
@@ -189,40 +187,53 @@ def minimax(board):
     """
     if terminal(board):
         return None
-    
+
+    # if player(board) == X:
+    #     v = -math.inf
+    #     best_action = None
+
+    #     for action in actions(board):
+    #         v_curr = MIN_VALUE(result(board, action))
+    #         if v_curr > v:
+    #             v = v_curr
+    #             best_action = action
+    #     return best_action
+    # else:
+    #     v = math.inf
+    #     best_action = None
+
+    #     for action in actions(board):
+    #         v_curr = MAX_VALUE(result(board, action))
+    #         if v_curr < v:
+    #             v = v_curr
+    #             best_action = action
+    #     return best_action
+
     if player(board) == X:
-        v = -math.inf
-        best_action = None
-
-        for action in actions(board):
-            v_curr = MIN_VALUE(result(board, action))
-            if v_curr > v:
-                v = v_curr
-                best_action = action
-        return best_action
+        return MAX_VALUE(board)[1]
     else:
-        v = math.inf
-        best_action = None
-
-        for action in actions(board):
-            v_curr = MAX_VALUE(result(board, action))
-            if v_curr < v:
-                v = v_curr
-                best_action = action
-        return best_action
+        return MIN_VALUE(board)[1]
 
 def MAX_VALUE(board):
+    best_action = None
     if terminal(board):
         return utility(board)
     v = -math.inf
     for action in actions(board):
-        v = max(v, MIN_VALUE(result(board, action)))
-    return v
+        next_value = max(v, MIN_VALUE(result(board, action))[0])
+        if next_value > v:
+            v = next_value
+            best_action = action
+    return [v, action]
 
 def MIN_VALUE(board):
+    best_action = None
     if terminal(board):
         return utility(board)
     v = math.inf
     for action in actions(board):
-        v = min(v, MAX_VALUE(result(board, action)))
-    return v
+        next_value = min(v, MAX_VALUE(result(board, action))[0])
+        if next_value < v:
+            v = next_value
+            best_action = action
+    return [v, action]
